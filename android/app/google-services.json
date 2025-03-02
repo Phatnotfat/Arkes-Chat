@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "938282941868",
+    "project_id": "arkes-chat-app",
+    "storage_bucket": "arkes-chat-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938282941868:android:10a2e5089ff1710402ce09",
+        "android_client_info": {
+          "package_name": "com.example.arkes_chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938282941868-frqol14i4r4u5dvum773sj4fabgu7800.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.arkes_chat_app",
+            "certificate_hash": "ab5ca74e6392bc18513f5264730da74c70fe152b"
+          }
+        },
+        {
+          "client_id": "938282941868-k5omape5nc4d0doa7db0eibaaemm0d3p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ3Owqv5NfQv3wgwuhVAfLQkGguSPSrpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938282941868-k5omape5nc4d0doa7db0eibaaemm0d3p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "938282941868-2eeoja18numqv0a3k2oo0mpi3t6k812a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.arkesChatApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
