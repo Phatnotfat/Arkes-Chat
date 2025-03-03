@@ -35,6 +35,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      print("Firebase Auth State Changed: ${user?.uid}");
+    });
     Widget content = Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

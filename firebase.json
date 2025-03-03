@@ -1,1 +1,30 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"arkes-chat-app","appId":"1:938282941868:android:10a2e5089ff1710402ce09","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"arkes-chat-app","appId":"1:938282941868:ios:8750be9950eff2b502ce09","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"arkes-chat-app","configurations":{"android":"1:938282941868:android:10a2e5089ff1710402ce09","ios":"1:938282941868:ios:8750be9950eff2b502ce09"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "arkes-chat-app",
+          "appId": "1:938282941868:android:10a2e5089ff1710402ce09",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "arkes-chat-app",
+          "appId": "1:938282941868:ios:8750be9950eff2b502ce09",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "arkes-chat-app",
+          "configurations": {
+            "android": "1:938282941868:android:10a2e5089ff1710402ce09",
+            "ios": "1:938282941868:ios:8750be9950eff2b502ce09"
+          }
+        }
+      }
+    }
+  }
+}

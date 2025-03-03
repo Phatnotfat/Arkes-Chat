@@ -5,13 +5,15 @@ class CustomTextField extends StatefulWidget {
   final String labelText;
   final bool isPassword;
   final FormFieldValidator<String>? validator;
+  final String hintText;
 
   const CustomTextField({
     super.key,
     required this.controller,
-    required this.labelText,
+    this.labelText = '',
     this.isPassword = false,
     this.validator,
+    this.hintText = '',
   });
 
   @override
@@ -31,9 +33,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
       validator: widget.validator,
       keyboardType: !widget.isPassword ? TextInputType.emailAddress : null,
       decoration: InputDecoration(
+        hintText: widget.hintText == '' ? null : widget.hintText,
         contentPadding: const EdgeInsets.all(15),
 
-        labelText: widget.labelText,
+        labelText: widget.labelText == '' ? null : widget.labelText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
         ),

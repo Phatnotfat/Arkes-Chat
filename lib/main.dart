@@ -1,3 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'firebase_options.dart';
 import 'package:arkes_chat_app/screens/splash.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const App());
+  runApp(ProviderScope(child: const App()));
 }
 
 class App extends StatelessWidget {

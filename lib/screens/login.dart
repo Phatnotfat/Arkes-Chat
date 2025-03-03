@@ -58,6 +58,10 @@ class _LoginScreenState extends State<LoginScreen> {
         const Duration(milliseconds: 500),
       ); // Chờ Firestore cập nhật
     }
+
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      print("Auth State Changed: ${user?.uid}");
+    });
     print('google thanh cong');
     return;
   }
@@ -112,6 +116,9 @@ class _LoginScreenState extends State<LoginScreen> {
           _isAuthenticating = false;
         });
       }
+      FirebaseAuth.instance.authStateChanges().listen((user) {
+        print("Auth State Changed: ${user?.uid}");
+      });
       setState(() {
         _isAuthenticating = false;
       });
@@ -218,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       const SizedBox(height: 30),
                       ElevatedButton(
-                        onPressed: _submit,
+                        onPressed: _isAuthenticating ? null : _submit,
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(300, 50),
                           backgroundColor: Color.fromRGBO(88, 170, 137, 1),

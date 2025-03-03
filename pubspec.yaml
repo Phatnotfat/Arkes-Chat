@@ -41,6 +41,9 @@ dependencies:
   cloud_firestore: ^5.6.5
   firebase_storage: ^12.4.4
   google_sign_in: ^6.2.2
+  image_picker: ^1.1.2
+  riverpod: ^2.6.1
+  flutter_riverpod: ^2.6.1
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +73,8 @@ flutter:
     - assets/images/happy.png
     - assets/images/animals.png
     - assets/images/swim.png
+    - assets/images/user-avatar.png
+    - assets/images/edit.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
