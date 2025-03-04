@@ -1,18 +1,26 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// **1. StateNotifier để lắng nghe Firestore**
 class FriendRequestsNotifier extends StateNotifier<List<Map<String, dynamic>>> {
+  StreamSubscription? _subscription;
+
   FriendRequestsNotifier() : super([]) {
     _listenToFriendRequests();
   }
 
   /// **2. Lắng nghe Firestore khi có request mới**
   void _listenToFriendRequests() {
-    final String currentUserUid = FirebaseAuth.instance.currentUser!.uid;
+    final String? currentUserUid = FirebaseAuth.instance.currentUser?.uid;
+    if (currentUserUid == null) return;
 
-    FirebaseFirestore.instance
+    // Hủy lắng nghe dữ liệu cũ trước khi lắng nghe UID mới
+    _subscription?.cancel();
+
+    _subscription = FirebaseFirestore.instance
         .collection('receive_request_friends')
         .doc(currentUserUid)
         .snapshots()
@@ -21,12 +29,16 @@ class FriendRequestsNotifier extends StateNotifier<List<Map<String, dynamic>>> {
             final data = snapshot.data()!;
             List<Map<String, dynamic>> requests =
                 List<Map<String, dynamic>>.from(data['receive_requests'] ?? []);
-            state =
-                requests; // Cập nhật state với danh sách yêu cầu kết bạn mới
+            state = requests; // Cập nhật danh sách yêu cầu kết bạn
           } else {
             state = [];
           }
         });
+  }
+
+  /// **3. Cập nhật lắng nghe khi tài khoản thay đổi**
+  void updateListener() {
+    _listenToFriendRequests();
   }
 
   Future<void> removeRequestByUid(
@@ -134,6 +146,12 @@ class FriendRequestsNotifier extends StateNotifier<List<Map<String, dynamic>>> {
     } catch (error) {
       print(error);
     }
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel(); // Hủy lắng nghe khi Provider bị hủy
+    super.dispose();
   }
 }
 

@@ -1,13 +1,15 @@
+import 'package:arkes_chat_app/providers/friend_requests_provider.dart';
+import 'package:arkes_chat_app/providers/friends_provider.dart';
 import 'package:arkes_chat_app/screens/add_friend.dart';
 import 'package:arkes_chat_app/screens/friend_requests.dart';
 import 'package:arkes_chat_app/screens/friends.dart';
 import 'package:arkes_chat_app/screens/splash.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
-class CustomDrawer extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class CustomDrawer extends ConsumerStatefulWidget {
   const CustomDrawer({
     super.key,
     required this.email,
@@ -18,15 +20,17 @@ class CustomDrawer extends StatefulWidget {
   final String imageUrl;
   final String email;
   @override
-  State<CustomDrawer> createState() {
+  ConsumerState<CustomDrawer> createState() {
     return _CustomDrawerScreen();
   }
 }
 
-class _CustomDrawerScreen extends State<CustomDrawer> {
+class _CustomDrawerScreen extends ConsumerState<CustomDrawer> {
   Future<void> _logout() async {
     await FirebaseAuth.instance.signOut();
 
+    ref.read(friendRequestsProvider.notifier).updateListener();
+    // ref.read(friendsProvider.notifier).resetState();
     // Xóa toàn bộ stack và quay lại SplashScreen
     if (mounted) {
       Navigator.pushAndRemoveUntil(
