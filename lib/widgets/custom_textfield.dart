@@ -7,6 +7,7 @@ class CustomTextField extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final String hintText;
 
+  final Function(bool flag)? onTyping;
   const CustomTextField({
     super.key,
     required this.controller,
@@ -14,6 +15,7 @@ class CustomTextField extends StatefulWidget {
     this.isPassword = false,
     this.validator,
     this.hintText = '',
+    this.onTyping,
   });
 
   @override
@@ -29,6 +31,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
+      onChanged: (value) {
+        if (widget.onTyping != null) {
+          if (value.trim().isNotEmpty) {
+            widget.onTyping!(false); // Gọi nếu có truyền vào
+          } else {
+            widget.onTyping!(true);
+          }
+        }
+      },
       obscureText: widget.isPassword ? _obscureText : false,
       validator: widget.validator,
       keyboardType: !widget.isPassword ? TextInputType.emailAddress : null,

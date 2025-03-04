@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:arkes_chat_app/providers/friend_requests_provider.dart';
 import 'package:arkes_chat_app/providers/friends_provider.dart';
-import 'package:arkes_chat_app/screens/chat.dart';
+import 'package:arkes_chat_app/screens/tabs.dart';
 import 'package:arkes_chat_app/screens/complete_profile.dart';
 import 'package:arkes_chat_app/screens/onboarding.dart';
 import 'package:arkes_chat_app/screens/login.dart';
@@ -88,7 +88,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                     userData['isProfileComplete'] ?? false;
 
                 return isProfileComplete
-                    ? const ChatScreen()
+                    ? const TabsScreen()
                     : const CompleteProfileScreen();
               },
             );

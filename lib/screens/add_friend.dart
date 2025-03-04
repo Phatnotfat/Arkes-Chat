@@ -122,6 +122,8 @@ class _AddFriendScreen extends State<AddFriendScreen> {
         _isAdding = false;
       });
       snackBarResult('Friend request sent successfully');
+
+      Navigator.pop(context);
       print("Gửi kết bạn thành công");
     } catch (error) {
       setState(() {
@@ -143,7 +145,7 @@ class _AddFriendScreen extends State<AddFriendScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('data')),
+      appBar: AppBar(title: Text('Add Friend')),
       body: Padding(
         padding: const EdgeInsets.all(30),
         child: Column(

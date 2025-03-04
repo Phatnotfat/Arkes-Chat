@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:arkes_chat_app/screens/chat.dart';
+import 'package:arkes_chat_app/screens/tabs.dart';
 import 'package:arkes_chat_app/widgets/user_image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,7 +52,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
       });
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const ChatScreen()),
+        MaterialPageRoute(builder: (context) => const TabsScreen()),
       );
     } on FirebaseAuthException catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
