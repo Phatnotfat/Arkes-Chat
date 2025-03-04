@@ -1,5 +1,6 @@
 import 'package:arkes_chat_app/screens/add_friend.dart';
 import 'package:arkes_chat_app/screens/friend_requests.dart';
+import 'package:arkes_chat_app/screens/friends.dart';
 import 'package:arkes_chat_app/screens/splash.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -71,7 +72,7 @@ class _CustomDrawerScreen extends State<CustomDrawer> {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (ctx) => AddFriendScreen()),
+                MaterialPageRoute(builder: (ctx) => const FriendScreen()),
               );
             },
           ),
@@ -82,7 +83,7 @@ class _CustomDrawerScreen extends State<CustomDrawer> {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (ctx) => AddFriendScreen()),
+                MaterialPageRoute(builder: (ctx) => const AddFriendScreen()),
               );
             },
           ),
@@ -93,7 +94,9 @@ class _CustomDrawerScreen extends State<CustomDrawer> {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (ctx) => RequestFriendScreen()),
+                MaterialPageRoute(
+                  builder: (ctx) => const RequestFriendScreen(),
+                ),
               );
             },
           ),

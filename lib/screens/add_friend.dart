@@ -51,6 +51,30 @@ class _AddFriendScreen extends State<AddFriendScreen> {
       //Lấy UID từ document tìm thấy
       final friendUid = querySnapshot.docs.first.id; // UID là document ID
 
+      // **2️⃣ Kiểm tra xem đã là bạn bè chưa**
+      final DocumentSnapshot currentUserFriendsSnapshot =
+          await firestore.collection('friends').doc(currentUserUid).get();
+
+      if (currentUserFriendsSnapshot.exists) {
+        final List<dynamic> currentUserFriends = List.from(
+          currentUserFriendsSnapshot['friends'] ?? [],
+        );
+
+        // **Kiểm tra xem friendUid có trong danh sách bạn bè không**
+        bool isAlreadyFriend = currentUserFriends.any(
+          (friend) => friend['uid-friend'] == friendUid,
+        );
+
+        if (isAlreadyFriend) {
+          setState(() {
+            _isAdding = false;
+          });
+          snackBarResult('You are already friends');
+          print("Bạn đã là bạn bè của nhau");
+          return;
+        }
+      }
+
       //  Kiểm tra nếu đã gửi lời mời trước đó (tránh gửi trùng)
       final sentRequestDoc =
           await firestore
