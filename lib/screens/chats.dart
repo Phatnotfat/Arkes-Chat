@@ -1,3 +1,4 @@
+import 'package:arkes_chat_app/screens/chat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,13 @@ class ChatsScreen extends StatefulWidget {
 
 class _ChatsScreenState extends State<ChatsScreen> {
   /// **Định dạng thời gian từ Timestamp**
-  String _formatTimestamp(Timestamp timestamp) {
-    DateTime date = timestamp.toDate();
-    return "${date.hour}:${date.minute.toString().padLeft(2, '0')}";
+  String _formatTimestamp(dynamic timestamp) {
+    if (timestamp == null) return "Unknown"; // Nếu null, hiển thị 'Unknown'
+    if (timestamp is Timestamp) {
+      DateTime date = timestamp.toDate();
+      return "${date.hour}:${date.minute.toString().padLeft(2, '0')}";
+    }
+    return "Invalid Time"; // Tránh lỗi nếu có kiểu dữ liệu khác
   }
 
   @override
@@ -107,13 +112,27 @@ class _ChatsScreenState extends State<ChatsScreen> {
                     ),
                     subtitle: Text(
                       chatData['lastMessage'] ?? 'No messages yet',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     trailing: Text(
-                      _formatTimestamp(chatData['lastMessageAt']),
+                      chatData['lastMessageAt'] != null
+                          ? _formatTimestamp(chatData['lastMessageAt'])
+                          : "Pending...", // Hiển thị 'Pending...' nếu timestamp chưa có
                       style: const TextStyle(color: Colors.grey),
                     ),
                     onTap: () {
-                      // Xử lý mở màn hình chat với chatId
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder:
+                              (ctx) => ChatScreen(
+                                userName: userData['username'],
+                                imageUrl: userData['image_url'],
+                                chatId: chatId,
+                                participantId: participantId,
+                              ),
+                        ),
+                      );
                     },
                   );
                 },
