@@ -1,11 +1,18 @@
+import 'package:arkes_chat_app/services/notification_serivce.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatInputField extends StatefulWidget {
-  const ChatInputField({super.key, required this.receiverId});
+  const ChatInputField({
+    super.key,
+    required this.receiverId,
+    required this.tokenNotification,
+    required this.currentUserName,
+  });
   final String receiverId;
-
+  final String tokenNotification;
+  final String currentUserName;
   @override
   State<ChatInputField> createState() => _ChatInputFieldState();
 }
@@ -66,10 +73,17 @@ class _ChatInputFieldState extends State<ChatInputField> {
           'lastMessageAt': timestamp,
           'participantId': senderId, // Lưu người trò chuyện với user
         }, SetOptions(merge: true));
-
+    print('tin nhan thong bao ${widget.tokenNotification}');
     // 🔹 **Gửi push notification tới người nhận**
-    sendPushNotification(widget.receiverId, message);
+    // sendPushNotification(widget.receiverId, message);
+    await LocalNotificationService().pushNotification(
+      title: widget.currentUserName,
+      body: message,
+      token: widget.tokenNotification,
+      receiverId: widget.receiverId,
+    );
 
+    print('dc kg');
     await Future.delayed(Duration(seconds: 1));
   }
 
@@ -88,11 +102,11 @@ class _ChatInputFieldState extends State<ChatInputField> {
         vertical: 8,
       ), // Giảm padding tổng thể
       decoration: BoxDecoration(
-        color: Color.fromRGBO(170, 212, 190, 1),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
+        color: Color.fromRGBO(191, 239, 185, 1),
+        // borderRadius: const BorderRadius.only(
+        //   topLeft: Radius.circular(20),
+        //   topRight: Radius.circular(20),
+        // ),
       ),
       child: Row(
         mainAxisAlignment:
@@ -155,8 +169,4 @@ class _ChatInputFieldState extends State<ChatInputField> {
       ),
     );
   }
-}
-
-void sendPushNotification(String receiverId, String message) {
-  print('📩 Gửi push notification đến $receiverId: $message');
 }

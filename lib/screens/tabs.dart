@@ -193,7 +193,7 @@ class _TabsScreenState extends State<TabsScreen> {
                       ),
                     ],
                   ),
-                  const ChatsScreen(),
+                  ChatsScreen(userName: _username),
                 ],
               ),
             ),

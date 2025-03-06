@@ -5,6 +5,7 @@ import 'package:arkes_chat_app/screens/tabs.dart';
 import 'package:arkes_chat_app/screens/complete_profile.dart';
 import 'package:arkes_chat_app/screens/onboarding.dart';
 import 'package:arkes_chat_app/screens/login.dart';
+import 'package:arkes_chat_app/services/notification_serivce.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +66,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           if (snapshot.hasData) {
             ref.read(friendsProvider.notifier).updateListener();
             ref.read(friendRequestsProvider.notifier).updateListener();
+            LocalNotificationService().uploadFcmToken();
             return FutureBuilder<DocumentSnapshot>(
               future:
                   FirebaseFirestore.instance

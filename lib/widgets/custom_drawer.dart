@@ -4,6 +4,7 @@ import 'package:arkes_chat_app/screens/add_friend.dart';
 import 'package:arkes_chat_app/screens/friend_requests.dart';
 import 'package:arkes_chat_app/screens/friends.dart';
 import 'package:arkes_chat_app/screens/splash.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -27,7 +28,16 @@ class CustomDrawer extends ConsumerStatefulWidget {
 
 class _CustomDrawerScreen extends ConsumerState<CustomDrawer> {
   Future<void> _logout() async {
-    await FirebaseAuth.instance.signOut();
+    final _currentUser = FirebaseAuth.instance.currentUser;
+
+    if (_currentUser != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_currentUser.uid)
+          .update({'notificationToken': FieldValue.delete()});
+
+      await FirebaseAuth.instance.signOut();
+    }
 
     ref.read(friendRequestsProvider.notifier).updateListener();
     // ref.read(friendsProvider.notifier).resetState();

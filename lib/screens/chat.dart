@@ -9,11 +9,15 @@ class ChatScreen extends StatefulWidget {
     required this.imageUrl,
     required this.chatId,
     required this.participantId,
+    required this.tokenNotificationParticipant,
+    required this.currentUserName,
   });
   final String participantId;
   final String userName;
   final String imageUrl;
   final String chatId;
+  final String tokenNotificationParticipant;
+  final String currentUserName;
   @override
   State<ChatScreen> createState() {
     return _ChatScreenState();
@@ -26,7 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(170, 212, 190, 1),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(170, 212, 190, 1),
+        backgroundColor: Color.fromRGBO(191, 239, 185, 1),
         titleSpacing: 0,
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -105,18 +109,28 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: MessageListView(
-              chatId: widget.chatId,
-              imgUrl: widget.imageUrl,
-            ),
-          ), // Danh sách tin nhắn
-          ChatInputField(
-            receiverId: widget.participantId,
-          ), // Thanh nhập tin nhắn
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/treebackground.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: MessageListView(
+                chatId: widget.chatId,
+                imgUrl: widget.imageUrl,
+              ),
+            ), // Danh sách tin nhắn
+            ChatInputField(
+              tokenNotification: widget.tokenNotificationParticipant,
+              receiverId: widget.participantId,
+              currentUserName: widget.currentUserName,
+            ), // Thanh nhập tin nhắn
+          ],
+        ),
       ),
     );
   }

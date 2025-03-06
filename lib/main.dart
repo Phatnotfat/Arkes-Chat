@@ -1,3 +1,5 @@
+import 'package:arkes_chat_app/services/notification_serivce.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'firebase_options.dart';
@@ -8,11 +10,32 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await LocalNotificationService().requestPermission();
+  await LocalNotificationService().init();
   runApp(ProviderScope(child: const App()));
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    notificationHandle();
+  }
+
+  void notificationHandle() {
+    FirebaseMessaging.onMessage.listen((event) async {
+      print(event.notification!.title);
+      LocalNotificationService().showNotification(event);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

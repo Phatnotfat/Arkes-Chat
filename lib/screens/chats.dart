@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatsScreen extends StatefulWidget {
-  const ChatsScreen({super.key});
+  const ChatsScreen({super.key, required this.userName});
+  final String userName;
   @override
   State<ChatsScreen> createState() {
     return _ChatsScreenState();
@@ -126,10 +127,13 @@ class _ChatsScreenState extends State<ChatsScreen> {
                         MaterialPageRoute(
                           builder:
                               (ctx) => ChatScreen(
+                                currentUserName: widget.userName,
                                 userName: userData['username'],
                                 imageUrl: userData['image_url'],
                                 chatId: chatId,
                                 participantId: participantId,
+                                tokenNotificationParticipant:
+                                    userData['notificationToken'],
                               ),
                         ),
                       );

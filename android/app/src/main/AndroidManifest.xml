@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name='android.permission.POST_NOTIFICATIONS'/>
     <application
         android:enableOnBackInvokedCallback="true"
         android:label="arkes_chat_app"
@@ -19,7 +20,7 @@
                  to determine the Window background behind the Flutter UI. -->
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme"
+              android:resource="@drawable/ic_notification"
               />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
