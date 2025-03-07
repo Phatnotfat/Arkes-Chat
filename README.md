@@ -6,36 +6,51 @@
 
 **Màn hình Login**
 
+<p align="center">
 <img src="assets/images/loginscreen.jpg" width="400">
+</p>
 
 **Màn hình Signup**
 
+<p align="center">
 <img src="assets/images/signup.jpg" width="400">
+</p>
 
 **Màn hình Update Profile**
 
+<p align="center">
 <img src="assets/images/updateprofile.jpg" width="400">
+</p>
 
 **Màn hình Add Friend**
 
+<p align="center">
 <img src="assets/images/addfriendscreen.jpg" width="400">
+</p>
 
 **Màn hình Danh Sách Friends**
 
+<p align="center">
 <img src="assets/images/listfriends.jpg" width="400">
+</p>
 
 **Màn hình Drawer**
 
+<p align="center">
 <img src="assets/images/drawerscreen.jpg" width="400">
+</p>
 
 **Màn hình Add Message**
 
+<p align="center">
 <img src="assets/images/add-messagescreen.jpg" width="400">
+</p>
 
 **Màn hình Push Notification**
 
+<p align="center">
 <img src="assets/images/pushnotification.jpg" width="400">
-
+</p>
 ---
 
 ## Tính năng chính
