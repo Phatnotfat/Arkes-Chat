@@ -150,8 +150,8 @@ class LocalNotificationService {
         return false;
       }
     } else {
-      return false;
       print('❌ Không gửi được thông báo: User đã logout hoặc không có token');
+      return false;
     }
   }
 }
