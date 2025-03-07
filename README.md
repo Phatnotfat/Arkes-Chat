@@ -5,28 +5,36 @@
 ## 📸 Demo
 
 **Màn hình Login**
-![Màn hình login](assets/images/loginscreen.jpg)
+
+<img src="assets/images/loginscreen.jpg" width="400">
 
 **Màn hình Signup**
-![Màn hình login](assets/images/signup.jpg)
+
+<img src="assets/images/signup.jpg" width="400">
 
 **Màn hình Update Profile**
-![Màn hình Update Profil](assets/images/updateprofile.jpg)
+
+<img src="assets/images/updateprofile.jpg" width="400">
 
 **Màn hình Add Friend**
-![Màn hình Add Friend](assets/images/addfriendscreen.jpg)
+
+<img src="assets/images/addfriendscreen.jpg" width="400">
 
 **Màn hình Danh Sách Friends**
-![Màn hình List Friends](assets/images/listfriends.jpg)
+
+<img src="assets/images/listfriends.jpg" width="400">
 
 **Màn hình Drawer**
-![Màn hình Drawer](assets/images/drawerscreen.jpg)
+
+<img src="assets/images/drawerscreen.jpg" width="400">
 
 **Màn hình Add Message**
-![Màn hình Add Message](assets/images/add-messagescreen.jpg)
 
-**Màn hình Add Message**
-![Push Notification](assets/images/pushnotification.jpg)
+<img src="assets/images/add-messagescreen.jpg" width="400">
+
+**Màn hình Push Notification**
+
+<img src="assets/images/pushnotification.jpg" width="400">
 
 ---
 
