@@ -1,6 +1,8 @@
 import 'package:arkes_chat_app/screens/add_message.dart';
+import 'package:arkes_chat_app/screens/archive.dart';
 import 'package:arkes_chat_app/screens/chats.dart';
 import 'package:arkes_chat_app/screens/splash.dart';
+import 'package:arkes_chat_app/screens/story.dart';
 import 'package:arkes_chat_app/widgets/custom_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -106,57 +108,10 @@ class _TabsScreenState extends State<TabsScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Container(
+                SizedBox(
                   height: 95,
                   // color: Colors.red,
-                  child: ListView.builder(
-                    shrinkWrap:
-                        true, // Giúp ListView chỉ chiếm kích thước cần thiết
-                    scrollDirection: Axis.horizontal, // Nếu bạn muốn cuộn ngang
-
-                    itemCount: 10,
-                    itemBuilder: (ctx, index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 7.8),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.green, // Màu viền
-                                  width: 3, // Độ dày viền
-                                ),
-                              ),
-                              child: CircleAvatar(
-                                radius: 29, // Kích thước avatar
-                                backgroundColor: const Color.fromARGB(
-                                  255,
-                                  150,
-                                  242,
-                                  170,
-                                ),
-                                child: Text(
-                                  index.toString(),
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Text('Name ${index}'),
-                              const SizedBox(width: 10),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                  child: StoryScreen(),
                 ),
               ],
             ),
@@ -184,7 +139,14 @@ class _TabsScreenState extends State<TabsScreen> {
                       ),
                       Spacer(),
                       ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder:
+                                  (ctx) => ArchiveScreen(userName: _username),
+                            ),
+                          );
+                        },
                         label: const Text(
                           'Archive Chat',
                           style: TextStyle(fontSize: 16),

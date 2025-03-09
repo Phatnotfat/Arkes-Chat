@@ -3,18 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ChatsScreen extends StatefulWidget {
-  const ChatsScreen({super.key, required this.userName});
+class ArchiveScreen extends StatefulWidget {
+  const ArchiveScreen({super.key, required this.userName});
   final String userName;
 
   @override
-  State<ChatsScreen> createState() => _ChatsScreenState();
+  State<ArchiveScreen> createState() => _ArchiveScreenState();
 }
 
-class _ChatsScreenState extends State<ChatsScreen> {
+class _ArchiveScreenState extends State<ArchiveScreen> {
   final String currentUserUid = FirebaseAuth.instance.currentUser!.uid;
 
-  /// **Hàm chuyển đổi `Timestamp` thành định dạng thời gian**
+  /// **Chuyển đổi `Timestamp` thành định dạng thời gian**
   String _formatTimestamp(dynamic timestamp) {
     if (timestamp == null) return "Unknown";
     if (timestamp is Timestamp) {
@@ -24,48 +24,46 @@ class _ChatsScreenState extends State<ChatsScreen> {
     return "Invalid Time";
   }
 
-  /// **Hàm lưu trữ (Archive) cuộc trò chuyện**
-  Future<void> _archiveChat(String chatId) async {
+  /// **Hàm bỏ lưu trữ (Unarchive) cuộc trò chuyện**
+  Future<void> _unarchiveChat(String chatId) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(currentUserUid)
         .collection('chats')
         .doc(chatId)
-        .update({'isArchived': true});
+        .update({'isArchived': false});
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream:
-          FirebaseFirestore.instance
-              .collection('users')
-              .doc(currentUserUid)
-              .collection('chats')
-              .where(
-                'isArchived',
-                isEqualTo: false,
-              ) // 🔥 Chỉ lấy chat chưa lưu trữ
-              .snapshots(),
-      builder: (ctx, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    return Scaffold(
+      appBar: AppBar(title: const Text("Archived Chats")),
+      body: StreamBuilder<QuerySnapshot>(
+        stream:
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(currentUserUid)
+                .collection('chats')
+                .where('isArchived', isEqualTo: true)
+                .snapshots(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('No conversations yet'));
-        }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No archived conversations.'));
+          }
 
-        // 🔥 Lấy danh sách và sắp xếp theo `lastMessageAt`
-        List<QueryDocumentSnapshot> chatDocs = snapshot.data!.docs;
-        chatDocs.sort((a, b) {
-          Timestamp timeA = a['lastMessageAt'];
-          Timestamp timeB = b['lastMessageAt'];
-          return timeB.compareTo(timeA);
-        });
+          // 🔥 Sắp xếp danh sách theo `lastMessageAt`
+          List<QueryDocumentSnapshot> chatDocs = snapshot.data!.docs;
+          chatDocs.sort((a, b) {
+            Timestamp timeA = a['lastMessageAt'];
+            Timestamp timeB = b['lastMessageAt'];
+            return timeB.compareTo(timeA);
+          });
 
-        return Expanded(
-          child: ListView.builder(
+          return ListView.builder(
             itemCount: chatDocs.length,
             itemBuilder: (ctx, index) {
               final chatData = chatDocs[index].data() as Map<String, dynamic>;
@@ -88,23 +86,20 @@ class _ChatsScreenState extends State<ChatsScreen> {
 
                   return Dismissible(
                     key: Key(chatId),
-                    direction: DismissDirection.endToStart,
+                    direction:
+                        DismissDirection
+                            .endToStart, // 🔄 Vuốt PHẢI để khôi phục
                     onDismissed: (direction) {
-                      _archiveChat(chatId);
+                      _unarchiveChat(chatId);
                     },
                     background: Container(
                       alignment: Alignment.centerRight,
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      color: Colors.green,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.archive, color: Colors.white, size: 28),
-                          Text(
-                            'Archived',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
+                      color: Colors.orange,
+                      child: Icon(
+                        Icons.unarchive,
+                        color: Colors.white,
+                        size: 28,
                       ),
                     ),
                     child: ListTile(
@@ -177,9 +172,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
                 },
               );
             },
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

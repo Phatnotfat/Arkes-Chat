@@ -1,6 +1,7 @@
 import 'package:arkes_chat_app/providers/friend_requests_provider.dart';
 import 'package:arkes_chat_app/providers/friends_provider.dart';
 import 'package:arkes_chat_app/screens/add_friend.dart';
+import 'package:arkes_chat_app/screens/archive.dart';
 import 'package:arkes_chat_app/screens/friend_requests.dart';
 import 'package:arkes_chat_app/screens/friends.dart';
 import 'package:arkes_chat_app/screens/splash.dart';
@@ -75,8 +76,11 @@ class _CustomDrawerScreen extends ConsumerState<CustomDrawer> {
             leading: Icon(Icons.archive_outlined),
             title: Text("Archive Chats"),
             onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, "/archive");
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (ctx) => ArchiveScreen(userName: widget.username),
+                ),
+              );
             },
           ),
           ListTile(

@@ -97,6 +97,7 @@ class _AddMessageScreenState extends ConsumerState<AddMessageScreen> {
           'lastMessage': message,
           'lastMessageAt': timestamp,
           'participantId': receiverId, // Lưu người trò chuyện với user
+          'isArchived': false,
         }, SetOptions(merge: true));
 
     // 🔹 **Cập nhật tin nhắn cuối cùng trong danh sách chat của người nhận**
