@@ -76,12 +76,14 @@ class _ChatInputFieldState extends State<ChatInputField> {
     print('tin nhan thong bao ${widget.tokenNotification}');
     // 🔹 **Gửi push notification tới người nhận**
     // sendPushNotification(widget.receiverId, message);
-    await LocalNotificationService().pushNotification(
-      title: widget.currentUserName,
-      body: message,
-      token: widget.tokenNotification,
-      receiverId: widget.receiverId,
-    );
+    if (widget.tokenNotification != '') {
+      await LocalNotificationService().pushNotification(
+        title: widget.currentUserName,
+        body: message,
+        token: widget.tokenNotification,
+        receiverId: widget.receiverId,
+      );
+    }
 
     print('dc kg');
     await Future.delayed(Duration(seconds: 1));

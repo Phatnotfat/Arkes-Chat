@@ -34,7 +34,7 @@ class _CustomDrawerScreen extends ConsumerState<CustomDrawer> {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(_currentUser.uid)
-          .update({'notificationToken': FieldValue.delete()});
+          .update({'notificationToken': ''});
 
       await FirebaseAuth.instance.signOut();
     }

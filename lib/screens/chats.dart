@@ -133,7 +133,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                 chatId: chatId,
                                 participantId: participantId,
                                 tokenNotificationParticipant:
-                                    userData['notificationToken'],
+                                    userData['notificationToken'] ?? '',
                               ),
                         ),
                       );
