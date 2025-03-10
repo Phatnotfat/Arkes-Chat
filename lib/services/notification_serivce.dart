@@ -67,6 +67,7 @@ class LocalNotificationService {
         print(
           "🔔 App opened from terminated state with message: ${message.data}",
         );
+        print('ok');
         _handleNotificationClick(jsonEncode(message.data));
       }
     });
