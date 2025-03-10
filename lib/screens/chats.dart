@@ -16,12 +16,12 @@ class _ChatsScreenState extends State<ChatsScreen> {
 
   /// **Hàm chuyển đổi `Timestamp` thành định dạng thời gian**
   String _formatTimestamp(dynamic timestamp) {
-    if (timestamp == null) return "Unknown";
+    if (timestamp == null) return "No time"; // Nếu null, hiển thị "No time"
     if (timestamp is Timestamp) {
       DateTime date = timestamp.toDate();
       return "${date.hour}:${date.minute.toString().padLeft(2, '0')}";
     }
-    return "Invalid Time";
+    return "Invalid Time"; // Tránh lỗi nếu có kiểu dữ liệu khác
   }
 
   /// **Hàm lưu trữ (Archive) cuộc trò chuyện**
@@ -57,11 +57,20 @@ class _ChatsScreenState extends State<ChatsScreen> {
         }
 
         // 🔥 Lấy danh sách và sắp xếp theo `lastMessageAt`
+        // 🔥 Lấy danh sách và sắp xếp theo `lastMessageAt`
         List<QueryDocumentSnapshot> chatDocs = snapshot.data!.docs;
         chatDocs.sort((a, b) {
-          Timestamp timeA = a['lastMessageAt'];
-          Timestamp timeB = b['lastMessageAt'];
-          return timeB.compareTo(timeA);
+          Timestamp? timeA = a['lastMessageAt'] as Timestamp?;
+          Timestamp? timeB = b['lastMessageAt'] as Timestamp?;
+
+          if (timeA == null && timeB == null)
+            return 0; // Nếu cả hai đều null, giữ nguyên vị trí
+          if (timeA == null)
+            return 1; // Nếu `timeA` null, đẩy nó xuống cuối danh sách
+          if (timeB == null)
+            return -1; // Nếu `timeB` null, đẩy nó xuống cuối danh sách
+
+          return timeB.compareTo(timeA); // Sắp xếp theo thời gian giảm dần
         });
 
         return Expanded(

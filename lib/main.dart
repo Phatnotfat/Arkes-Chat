@@ -7,6 +7,8 @@ import 'package:arkes_chat_app/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -31,9 +33,9 @@ class _AppState extends State<App> {
   }
 
   void notificationHandle() {
-    FirebaseMessaging.onMessage.listen((event) async {
-      print(event.notification!.title);
-      LocalNotificationService().showNotification(event);
+    FirebaseMessaging.onMessage.listen((message) async {
+      print(message.notification!.title);
+      LocalNotificationService().showNotification(message);
     });
   }
 
@@ -48,6 +50,7 @@ class _AppState extends State<App> {
         scaffoldBackgroundColor: Colors.white,
         // textTheme: GoogleFonts(),
       ),
+      navigatorKey: navigatorKey,
       home: SplashScreen(),
     );
   }

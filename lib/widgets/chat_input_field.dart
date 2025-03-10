@@ -73,15 +73,37 @@ class _ChatInputFieldState extends State<ChatInputField> {
           'lastMessageAt': timestamp,
           'participantId': senderId, // Lưu người trò chuyện với user
         }, SetOptions(merge: true));
+
     print('tin nhan thong bao ${widget.tokenNotification}');
     // 🔹 **Gửi push notification tới người nhận**
     // sendPushNotification(widget.receiverId, message);
     if (widget.tokenNotification != '') {
+      final dataNotification =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(senderId)
+              .get();
+      final Map<String, dynamic> userData = dataNotification.data()!;
+      final receivedUser =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(widget.receiverId)
+              .get();
+
+      final Map<String, dynamic> receivedUserData = receivedUser.data()!;
+      print('current ${userData}');
+      print('received ${receivedUserData}');
       await LocalNotificationService().pushNotification(
         title: widget.currentUserName,
         body: message,
         token: widget.tokenNotification,
         receiverId: widget.receiverId,
+        chatId: chatId,
+        currentId: senderId,
+        userName: userData['username'],
+        imgUrl: userData['image_url'],
+        userToken: userData['notificationToken'],
+        receiverUsername: receivedUserData['username'],
       );
     }
 

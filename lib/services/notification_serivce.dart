@@ -1,15 +1,16 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:arkes_chat_app/main.dart';
+import 'package:arkes_chat_app/screens/chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:googleapis_auth/auth_io.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LocalNotificationService {
   Future<void> requestPermission() async {
@@ -51,7 +52,50 @@ class LocalNotificationService {
         AndroidInitializationSettings('ic_notification');
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) async {
+        if (response.payload != null) {
+          print("🔔 Notification clicked with payload: ${response.payload}");
+          _handleNotificationClick(response.payload!);
+        }
+      },
+    );
+    //  Xử lý khi app mở từ thông báo (app bị đóng hoàn toàn)
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        print(
+          "🔔 App opened from terminated state with message: ${message.data}",
+        );
+        _handleNotificationClick(jsonEncode(message.data));
+      }
+    });
+
+    //  Xử lý khi app chạy nền và người dùng nhấn vào thông báo
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print("🔔 App opened from background with message: ${message.data}");
+      _handleNotificationClick(jsonEncode(message.data));
+    });
+  }
+
+  void _handleNotificationClick(String payload) {
+    Map<String, dynamic> data = jsonDecode(payload);
+    navigatorKey.currentState?.push(
+      MaterialPageRoute(
+        builder:
+            (context) => ChatScreen(
+              userName:
+                  data['username'], // userName của người khác(trường hợp này là người dùng hiện tại) username của currentId
+              imageUrl:
+                  data['imgUrl'], // tưogn tự userName, imageUrl của currentId
+              chatId: data['chatId'], //id đoạn chat
+              participantId:
+                  data['participantId'], // người dùng nhận (ở đây là id của currentId)
+              tokenNotificationParticipant: data['token'],
+              currentUserName: data['currentUsername'], //
+            ),
+      ),
+    );
   }
 
   showNotification(RemoteMessage message) async {
@@ -74,7 +118,7 @@ class LocalNotificationService {
       message.notification!.title,
       message.notification!.body,
       notificationDetails,
-      payload: 'Not present',
+      payload: jsonEncode(message.data),
     );
   }
 
@@ -83,6 +127,12 @@ class LocalNotificationService {
     required String body,
     required String token,
     required String receiverId,
+    required String chatId,
+    required String currentId,
+    required String userName,
+    required String imgUrl,
+    required String userToken,
+    required String receiverUsername,
   }) async {
     final userDoc =
         await FirebaseFirestore.instance
@@ -98,7 +148,6 @@ class LocalNotificationService {
         "assets/service_account.json",
       );
 
-      print('Nội dung JSON: $serviceAccountJson');
       final serviceAccount = ServiceAccountCredentials.fromJson(
         json.decode(serviceAccountJson),
       );
@@ -124,10 +173,13 @@ class LocalNotificationService {
               'click_action': 'FLUTTER_NOTIFICATION_CLICK', // Mở app khi click
             },
           },
-          'apns': {
-            'payload': {
-              'aps': {'sound': 'default'},
-            },
+          'data': {
+            'chatId': chatId,
+            'username': userName,
+            'imgUrl': imgUrl,
+            'participantId': currentId,
+            'token': userToken,
+            'currentUsername': receiverUsername,
           },
         },
       };
